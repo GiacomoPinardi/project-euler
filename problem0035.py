@@ -9,7 +9,6 @@
 
 from math import sqrt
 import numpy
-import time
 
 def encircle (n):
 	array = []
@@ -34,8 +33,6 @@ def generatePrimes (m):
 
 # Main
 
-t = time.time()
-
 result = 0
 
 primes = generatePrimes(1000000)
@@ -52,7 +49,5 @@ for i in range(2, 1000000):
 
 
 print result
-
-print time.time() - t
 
 #
