@@ -30,85 +30,32 @@ def generatePrimes (m):
     primes[1] = False
     return primes
 
-def generateOnlyPrimes (prim):
-    op = []
-    for i in range(len(prim)):
-        if prim[i]:
-            op.append(i)
+def getPrimesFactor (n):
+    factors = []
+    while n != 1:
+        for p in primesList:
+            if n % p == 0:
+                if p not in factors:
+                    factors.append(p)
+                n /= p
+                break
 
-    return op
-
-def getPrimesFactor (n, onlyPrimes):
-    fact = []
-    if n in dictFactors:
-        fact += dictFactors[n]
-    else:
-        if n in onlyPrimes:
-            fact.append(n)
-        else:
-            for p in onlyPrimes:
-                if n%p == 0:
-                    fact.append(p)
-                    fact += getPrimesFactor(n/p, onlyPrimes)
-                    break
-
-    return fact
-
-def getZippedFactors (factors):
-    d = {}
-    zF = []
-    for f in factors:
-        if f in d:
-            d[f] += 1
-        else:
-            d[f] = 1
-
-    for key in d:
-        zF.append(key**d[key])
-
-    return zF
-
-def haveDistinctFactors (arrays):
-    total = []
-    for a in arrays:
-        total += a
-
-    return len(total) == len(set(total))
+    return factors
 
 # Main
 
-result = 0
-maxNum = 1000000
-primes = generatePrimes(maxNum)
-onlyPrimes = generateOnlyPrimes(primes)
+primesErat = generatePrimes(1000000)
+primesList = [x for x in xrange(len(primesErat)) if primesErat[x]]
 
-dictFactors = {}
+n = 1
+count = 0
 
-distinct = 4
-
-oldValues = []
-i = 2
-
-while i < maxNum:
-    if i%10000 == 0:
-        print i
-        
-    facts = getPrimesFactor(i, onlyPrimes)
-    dictFactors[i] = facts
-    zFacts = getZippedFactors(facts)
-    if len(zFacts) == distinct:
-        oldValues.append(zFacts)
-        if len(oldValues) > distinct:
-            del oldValues[0]
-
-        if len(oldValues) == distinct and haveDistinctFactors(oldValues):
-            result = i
-            break
-
+while count < 4:
+    if len(getPrimesFactor(n)) == 4:
+        count += 1
     else:
-        oldValues = []
+        count = 0
 
-    i += 1
+    n += 1
 
-
-print result-distinct+1
+print n - 4
